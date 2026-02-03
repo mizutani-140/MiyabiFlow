@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test*)",
+      "Bash(pnpm test*)"
+    ]
+  },
+  "env": {
+    "AI_EVENT_WEBHOOK_URL": ""
+  }
+}

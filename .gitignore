@@ -1,0 +1,20 @@
+# AI artifacts
+.ai/logs/
+.ai/reports/
+.ai/metrics/
+.ai/tmp/
+.ai/state/local/
+
+# Worktrees
+.worktrees/
+
+# Local Claude settings (never commit)
+.claude/settings.local.json
+
+# OS / IDE
+.DS_Store
+.idea/
+.vscode/
+
+# MCP server deps
+.claude/mcp-servers/node_modules/

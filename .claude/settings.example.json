@@ -1,0 +1,29 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm test*)",
+      "Bash(pnpm test*)",
+      "Bash(uv run pytest*)",
+      "Bash(pytest*)"
+    ],
+    "ask": [
+      "Bash(git push*)",
+      "Bash(gh pr create*)"
+    ],
+    "deny": [
+      "Read(./.env)",
+      "Read(./secrets/**)"
+    ]
+  },
+  "env": {
+    "GITHUB_TOKEN": "",
+    "AI_EVENT_WEBHOOK_URL": "",
+    "CODEX_HOME": "~/.codex"
+  },
+  "enableAllProjectMcpServers": false,
+  "enabledMcpjsonServers": [
+    "codex",
+    "project-context",
+    "worktree-manager"
+  ]
+}

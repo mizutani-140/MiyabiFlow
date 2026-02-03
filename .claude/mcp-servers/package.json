@@ -1,0 +1,8 @@
+{
+  "name": "ai-autonomous-dev-mcp-servers",
+  "private": true,
+  "type": "commonjs",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  }
+}

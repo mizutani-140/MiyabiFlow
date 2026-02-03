@@ -1,0 +1,62 @@
+{
+  "mcpServers": {
+    "codex": {
+      "command": "codex",
+      "args": [
+        "mcp-server"
+      ],
+      "description": "Codex as [AIコーディングエージェントB] (review/test/verify)",
+      "timeout": 120000,
+      "env": {
+        "CODEX_HOME": "${CODEX_HOME}"
+      }
+    },
+    "project-context": {
+      "command": "node",
+      "args": [
+        ".claude/mcp-servers/project-context.cjs"
+      ],
+      "description": "Project summary + CI entrypoints",
+      "timeout": 60000
+    },
+    "worktree-manager": {
+      "command": "node",
+      "args": [
+        ".claude/mcp-servers/worktree-manager.cjs"
+      ],
+      "description": "Safe git worktree operations",
+      "timeout": 60000
+    },
+    "ci-runner": {
+      "command": "node",
+      "args": [
+        ".claude/mcp-servers/ci-runner.cjs"
+      ],
+      "description": "Run fixed CI entrypoint",
+      "timeout": 600000,
+      "disabled": true
+    },
+    "filesystem": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-filesystem",
+        "${workspaceFolder}"
+      ],
+      "description": "Filesystem MCP server (optional)",
+      "disabled": true
+    },
+    "github": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modelcontextprotocol/server-github"
+      ],
+      "description": "GitHub MCP server (requires token)",
+      "disabled": true,
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "${GITHUB_TOKEN}"
+      }
+    }
+  }
+}

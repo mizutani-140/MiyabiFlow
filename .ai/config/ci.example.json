@@ -1,0 +1,11 @@
+{
+  "lint": [
+    "npm run lint --if-present"
+  ],
+  "typecheck": [
+    "npm run typecheck --if-present"
+  ],
+  "test": [
+    "npm test --if-present"
+  ]
+}

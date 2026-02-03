@@ -1,0 +1,19 @@
+name: Release / CD (stub)
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    environment:
+      name: production
+    steps:
+      - uses: actions/checkout@v5
+      - name: Deploy (placeholder)
+        run: |
+          echo "Implement your deploy step here (e.g., ./scripts/deploy.sh)"

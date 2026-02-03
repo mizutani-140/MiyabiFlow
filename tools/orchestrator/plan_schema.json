@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "AI Plan (Task DAG)",
+  "type": "object",
+  "required": [
+    "meta",
+    "abstraction",
+    "tasks"
+  ],
+  "properties": {
+    "meta": {
+      "type": "object",
+      "required": [
+        "title",
+        "created_at"
+      ],
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        }
+      }
+    },
+    "abstraction": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      },
+      "description": "Concrete term -> [AbstractLabel]"
+    },
+    "tasks": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "id",
+          "title",
+          "agent",
+          "worktree",
+          "depends_on",
+          "dod"
+        ],
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "agent": {
+            "type": "string",
+            "enum": [
+              "claude",
+              "codex",
+              "human"
+            ]
+          },
+          "worktree": {
+            "type": "string"
+          },
+          "depends_on": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "dod": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "commands": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}

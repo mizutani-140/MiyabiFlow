@@ -1,0 +1,11 @@
+{
+  "system": "miyabi-ultra",
+  "version": "3.0.0",
+  "quality_gate": {
+    "last_passed_git_sha": null,
+    "last_checked": null
+  },
+  "stuck_detector": {
+    "recent_failures": []
+  }
+}
