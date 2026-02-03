@@ -21,7 +21,16 @@ CI_TEST=()
 CI_TYPECHECK=()
 
 if [[ -f "$CONFIG_FILE" ]]; then
-  python3 - <<'PY' "$CONFIG_FILE"
+  while IFS= read -r line; do
+    key="${line%%=*}"
+    val="${line#*=}"
+    IFS='||' read -r -a arr <<<"$val"
+    case "$key" in
+      lint) CI_LINT=("${arr[@]}");;
+      test) CI_TEST=("${arr[@]}");;
+      typecheck) CI_TYPECHECK=("${arr[@]}");;
+    esac
+  done < <(python3 - "$CONFIG_FILE" <<'PY'
 import json,sys
 p=sys.argv[1]
 cfg=json.load(open(p,'r',encoding='utf-8'))
@@ -31,16 +40,7 @@ for k in ("lint","test","typecheck"):
         arr=[]
     print(k+"="+("||".join(arr)))
 PY
-  | while IFS= read -r line; do
-      key="${line%%=*}"
-      val="${line#*=}"
-      IFS='||' read -r -a arr <<<"$val"
-      case "$key" in
-        lint) CI_LINT=("${arr[@]}");;
-        test) CI_TEST=("${arr[@]}");;
-        typecheck) CI_TYPECHECK=("${arr[@]}");;
-      esac
-    done
+)
 fi
 
 has_cmd() { command -v "$1" >/dev/null 2>&1; }
@@ -49,24 +49,11 @@ has_make_target() {
   grep -qE "^$1:" Makefile
 }
 
-# Auto-detect fallback commands if config is empty
-detect_defaults() {
-  # Node
-  if [[ -f package.json ]] && has_cmd npm; then
-    # Determine if scripts exist
-    if python3 - <<'PY' >/dev/null 2>&1; then
-import json
-p=json.load(open("package.json","r",encoding="utf-8"))
-s=p.get("scripts",{})
-print("lint" in s)
-PY
-    then :; fi
-  fi
-}
-
 # Prefer Makefile targets if present (repo-defined)
-if has_make_target ci; then
+# Skip if already called from Makefile to avoid infinite recursion
+if [[ -z "${MIYABIFLOW_CI_RUNNING:-}" ]] && has_make_target ci; then
   log "[CI] Using Makefile target: ci"
+  export MIYABIFLOW_CI_RUNNING=1
   run make ci
   exit 0
 fi
@@ -102,12 +89,12 @@ fi
 
 case "$MODE" in
   test-only)
-    run_cmd_list "Test" "${CI_TEST[@]}"
+    run_cmd_list "Test" "${CI_TEST[@]+"${CI_TEST[@]}"}"
     ;;
   ci|*)
-    run_cmd_list "Lint" "${CI_LINT[@]}"
-    run_cmd_list "Typecheck" "${CI_TYPECHECK[@]}"
-    run_cmd_list "Test" "${CI_TEST[@]}"
+    run_cmd_list "Lint" "${CI_LINT[@]+"${CI_LINT[@]}"}"
+    run_cmd_list "Typecheck" "${CI_TYPECHECK[@]+"${CI_TYPECHECK[@]}"}"
+    run_cmd_list "Test" "${CI_TEST[@]+"${CI_TEST[@]}"}"
     ;;
 esac
 

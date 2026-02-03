@@ -3,7 +3,7 @@ SHELL := /usr/bin/env bash
 .PHONY: ci test lint typecheck security
 
 ci:
-	bash scripts/ci/run_ci.sh --mode ci
+	MIYABIFLOW_CI_RUNNING=1 bash scripts/ci/run_ci.sh --mode ci
 
 test:
 	bash scripts/ci/run_ci.sh --mode test-only
